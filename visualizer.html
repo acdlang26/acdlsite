@@ -1969,20 +1969,18 @@ body.resizing {
       <label for="prompt-select">Examples:</label>
       <select id="prompt-select">
         <option value="">-- Select --</option>
-        <optgroup label="Papers">
-          <option value="genagents">Generative Agents</option>
-          <option value="rlm">RLM (REPL Language Model)</option>
+        <optgroup label="Basic Patterns">
+          <option value="basic_rag">Basic RAG</option>
+          <option value="react_base">ReAct Base</option>
+          <option value="react_no_reasoning">ReAct (No Reasoning in History)</option>
+          <option value="react_tool_rag">ReAct (Tool RAG at End)</option>
         </optgroup>
-        <optgroup label="React Patterns">
-          <option value="basic_react">Basic ReAct</option>
-          <option value="react_summ">ReAct with Summary</option>
-          <option value="mintagent">MintAgent</option>
-        </optgroup>
-        <optgroup label="Chats">
-          <option value="chat1">Simple Chat</option>
-          <option value="rag">RAG Chat</option>
+        <optgroup label="Real-World Systems">
+          <option value="opencode">OpenCode (Claude Code-like)</option>
+          <option value="openclaw">OpenClaw (Letta-like)</option>
         </optgroup>
         <optgroup label="Advanced">
+          <option value="multiagent">Multi-Agent Simulation</option>
           <option value="pokemon">Pokemon Blue Agent</option>
         </optgroup>
       </select>
@@ -4102,9 +4100,262 @@ var ACDL = (() => {
   <!-- Embedded Prompts -->
   <script>
 const PROMPTS = {
-  "rlm": "RLM[@T]: {\r\n    // self.messages\r\n    S: {\r\n        AVAILABLE_TOOLS // context variable, llm query(subquery), python execution via REPL blocks\r\n        INTERACTION_RULES   // inspect context, iterate, dont answer early, how to return final answer\r\n    }\r\n     \r\n    ForEach(@t: range(1,@T)) {\r\n        // if used tools, adds a list of tool responses to history\r\n        If sys.code_blocks[@t] {\r\n            ForEach(i: range(1,sys.code_block[@t].len)){\r\n                U: {\r\n                    sys.code_block[@t.i] \r\n                    sys.code_block[@t.i].response\r\n                }\r\n            }\r\n        }\r\n        \r\n        Else {\r\n            // if didnt use tools, adds the llm response to the history\r\n            A: LLM_RESP\r\n        }\r\n    }\r\n\r\n    // next action prompt\r\n    If sys.final_answer[@T] {\r\n        U: PROVIDE_FINAL_ANSWER\r\n    }\r\n    ElseIf @T == 1 {\r\n        U: {\r\n            USE_REPL        // this is your first interaction, there is no action history yet so use the repl env to view your context\r\n            REPL_INSTRUCTIONS(sys.query)    // use the repl instructions to find the answer to the query. look for context var, or query sublm\r\n        }\r\n    }\r\n    Else {\r\n        U: {\r\n            HIST_EXPLANATION    // the history before is your previous interactions with the REPL env\r\n            REPL(sys.query)     // use the REPL to answer the query\r\n        }\r\n    }\r\n\r\n}\r\n\r\nSubPrompt[@t]: {\r\n    // gets a prompt written by the rootlm in the repl env\r\n}",
-  "react_summ": "Prompt[@T, k]: {\r\n    U: {env.user_question}\r\n    S: {\r\n        SUMMARY_INTRO // here is a summary of the history\r\n        summarize_hist(@T-k)\r\n    }\r\n    ForEach(@t: range(1, @T-k)) {\r\n        A: {\r\n            AVAILABLE_TOOLS\r\n            resp.tool_reasoning[@t]\r\n            sys.tool_used[@t]\r\n        }\r\n        U: sys.tool_used[@t].tool_response\r\n    }\r\n    S: INSTRUCTION // choose an action or declare done\r\n}",
-  "chat1": "Chat1[@T]: {\r\n    S: INSTRUCTIONS \r\n    U: {\r\n        ForEach(t: range(1,T-1)) {\r\n            env.user_input[@t]\r\n            resp.llm_answer[@t]\r\n        }\r\n    }\r\n\r\n    U: env.user_input[@T]\r\n}"
+  "basic_rag": `BasicRAG[@T]: {
+    S: INSTRUCTIONS
+    U: {
+        Name docs := k_relevant_docs(env.user_input[@T])
+        ForEach(i: range(1, $docs.len)) {
+          $docs[i].source
+          $docs[i].content
+        }
+        ANSWER_Q_FROM_DOCS
+        env.user_input[@T]
+    }
+}`,
+  "react_base": `ReactBase[@T]: {
+  S: {
+    INSTRUCTIONS
+    AVAILABLE_TOOLS
+  }
+  U: env.user_input[@1]
+  // history
+  ForEach(t: range(1,@T-1)) {
+    A: {
+      MARK 1 {
+        resp.tool_reasoning[@t]
+      }
+      sys.tool_used[@t]
+    }
+    T: sys.tool_used[@t].tool_response
+  }
+  S: USE_TOOLS_TO_SOLVE_TASK
+}`,
+  "react_no_reasoning": `ReactNoReasoningInHistory[@T]: {
+  S: {
+    INSTRUCTIONS
+    AVAILABLE_TOOLS
+  }
+  U: env.user_input[@1]
+  // history
+  ForEach(t: range(1,@T-1)) {
+    A: {
+      sys.tool_used[@t]
+    }
+    T: sys.tool_used[@t].tool_response
+  }
+  S: USE_TOOLS_TO_SOLVE_TASK
+}`,
+  "react_tool_rag": `ReactToolRagAtEnd[@T]: {
+  S: {
+    INSTRUCTIONS
+  }
+  U: env.user_input[@1]
+  // history
+  ForEach(t: range(1,@T-1)) {
+    A: {
+      resp.tool_reasoning[@t]
+      sys.tool_used[@t]
+    }
+    T: sys.tool_used[@t].tool_response
+  }
+  S: {
+    MARK 1 {
+    locate_tools(env.user_input[@1])
+    }
+    USE_TOOLS_TO_SOLVE_TASK
+  }
+}`,
+  "opencode": `OpenCodeMain[@T.I]: {
+  // NOTE: tools, skills and subagents are all provided in tools and tool descriptions
+  S: {
+    SYSTEM_PROMPT
+    ENV_INFO(env.working_directory[@1], env.is_dir_a_repo[@1], env.platform[@1], env.date[@1])
+  }
+  MARK 2 {
+  Name C := sys.last_compaction_time[@T]
+  If @$C > 1 {
+    U: WHAT_DID_WE_DO
+    A: sys.conversation_summary[@$C]
+  }
+  }
+  ForEach(@t: range(@$C, @T)) {
+    U: {
+      env.user_input[@t]
+      MARK 3 {
+      If @T == @t {
+        If sys.is_plan_mode[@t] {
+          PLAN_MODE_REMINDER
+        }
+        If sys.is_build_mode[@t] && sys.prev_is_plan[@t] {
+          LEAVE_PLAN_MODE_REMINDER
+        }
+      }
+      }
+    }
+    PromptEndsHere when (@T == @t && @T.0)
+    ForEach(@i: range(1,@t.substeps)) {
+     MARK 1 {
+      A: {
+        ForEach(tool: sys.tool_requests[@t.i]) {
+          $tool.id_name_and_args
+        }
+      }
+      // Loop of tool responses, each in own tool msg
+      ForEach(tool: tool_requests[@t.i]) {
+        T: {
+          $tool.id_and_response
+        }
+      }
+      }
+      PromptEndsHere when (@T == @t && @T.I)
+    }
+    A: sys.response[@t]
+  }
+}`,
+  "openclaw": `OpenClaw[@T.I]: {
+S: {
+  // Very long system prompt detailing skills, tools, sub-agents, memory-files
+  SystemPrompt()
+}
+// summarized early conversation (if exists)
+MARK 2 {
+Name C := sys.last_compaction_time[@T]
+If (@C > 1) {
+  U: {
+    THIS_IS_A_SUMMARY
+    sys.conversation_summary[@C]
+  }
+  A: resp.response[@C]
+}
+}
+// conversation history
+ForEach(t: range(@C + 1, @T)) {
+  U: {
+    MARK 6 {
+    // The pending_messages list is often empty
+    ForEach(m: range(1,sys.pending_messages[@t].len)) {
+      sys.pending_messages[@t][m].date_time
+      sys.pending_messages[@t][m].message
+    }
+    }
+    MARK 5 {
+    Switch env.input_source[@t] {
+      Case user: {
+        MARK 4 {
+          sys.date_time[@t]
+        }
+        env.user_query[@t]
+      }
+      Case heartbeat_timer: {
+        HEARTBEAT_INSTRUCTIONS
+      }
+    }
+    }
+  }
+  PromptEndsHere when (@t == @T && T.0)
+  // tool-using loop history
+  ForEach(i: range(1,@t.substeps)) {
+    MARK 1 {
+    // multiple requests in one assistant message
+    A: {
+      ForEach(tool: sys.tool_requests[@t.i]) {
+        $tool.id_name_and_arg
+      }
+    }
+    // Loop of tool responses, each in own tool msg
+    ForEach(tool: sys.tool_requests[@t.i]) {
+      T: {
+        $tool.id_and_response
+      }
+    }
+    }
+    PromptEndsHere when (@t == @T && @T.I)
+  }
+  A: resp.response[@t]
+}
+}`,
+  "multiagent": `// agent is self, agent2 is who we converse with
+MultiAgent[@T, agent]: {
+  S: {
+    INSTRUCTIONS
+  }
+  U: {
+    // history
+    // NOTE: history does not show substeps
+    ForEach(@t: range(@T-50, @T-1)) {
+      sys[agent].performed_action[@t]
+      sys[agent].performed_action[@t].result
+    }
+    // what I have
+    sys[agent].inventory[@T]
+    // whom I see in the environment and what I know about them
+    ForEach(a: env.seen_actors[@T]) {
+      a.name
+      a.description
+      retrieve(sys[agent].memory[@T], a.name)
+    }
+    If sys[agent].in_conversation[@T] {
+     ForEach (convTurn: sys[agent].conversation[@T]) {
+       convTurn.speaker
+       convTurn.content
+     }
+    }
+  }
+  S: {
+    sys[agent].available_actions
+    If sys[agent].in_conversation[@T] {
+      // You can do things, but you are in a conversation
+      CONTINUE_THE_CONVERSATION
+    }
+  }
+}`,
+  "pokemon": `Pokemon[@T]: {
+    U: env.image.HUD // heads up display screenshot
+    S: {
+        INTRO // you are playing pokemon blue
+        GOAL // beat the game
+        CONVENTIONS  // vision to text translation conventions
+        AVAILABLE_TOOLS
+    }
+
+    History {
+        A: {
+            If @T>1 {
+                ForEach(i: range(@T-(@T%100),@T-1)) {
+                    resp.action[@i]
+                }
+
+                If @T%100==0 {
+                    Name actions := [resp.action[@t] for t in range(@T-100, @T)]
+                    summarize($actions)
+                    If @T>999 and @T%1000==0 {
+                        Name relevant_summaries := [sys.summary[@t] for t in range(@T, @T-900, 100)]
+                        compress_summaries($relevant_summaries)
+                    }
+                }
+                If @T>99 {
+                    ForEach(i: max(100, @T-(@T%100)-800), @T-(@T%100), 100) {
+                        sys.summary[@i]
+                    }
+
+                    If @T>999 and @T%1000!=0 {
+                        ForEach(i: range(max(1000, @T-@T%1000-900), @T-(@T%1000), 1000)) {
+                            sys.compressed_summary[@i]
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    If @T%25==0 {
+        // response from critique agents
+        A: critique_performance(prompt.History[@T])
+    }
+    U: env.xml_map[@T] // unseen coordinates are not viewable until explored
+    S: INSTRUCTION_TO_EXPLORE
+    S: CHOOSE_ACTION // instructions to choose next action
+}`
 };
   </script>
 
