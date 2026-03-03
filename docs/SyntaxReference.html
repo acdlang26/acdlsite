@@ -493,6 +493,18 @@
 
     footer a:hover { color: #fff; }
 
+    footer a.external::after {
+      content: '';
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-left: 4px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/%3E%3Cpolyline points='15 3 21 3 21 9'/%3E%3Cline x1='10' y1='14' x2='21' y2='3'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      vertical-align: middle;
+    }
+
     @media (max-width: 900px) {
       aside { display: none; }
       main { padding: 32px 24px; }
@@ -505,7 +517,7 @@
     <a href="../index.html" class="nav-logo">ACDL</a>
     <div class="nav-links">
       <a href="../visualizer.html">Live Editor</a>
-      <a href="SyntaxReference.html">Docs</a>
+      <a href="SyntaxReference.html">Documentation</a>
       <a href="../examples/">Examples</a>
       <a href="../vscode.html">VSCode</a>
       <a href="https://github.com/acdlang26/acdl" class="external">GitHub</a>
@@ -1143,7 +1155,7 @@ PromptName2[idx1, idx2, ...]: {
   </div>
 
   <footer>
-    <p>ACDL &mdash; Agentic Context Description Language &middot; <a href="https://github.com/acdlang26/acdl">GitHub</a></p>
+    <p>ACDL &mdash; Agentic Context Description Language &middot; <a href="https://github.com/acdlang26/acdl" class="external">GitHub</a></p>
   </footer>
 </body>
 </html>
