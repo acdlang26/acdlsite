@@ -429,6 +429,18 @@
       color: #fff;
     }
 
+    footer a.external::after {
+      content: '';
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-left: 4px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/%3E%3Cpolyline points='15 3 21 3 21 9'/%3E%3Cline x1='10' y1='14' x2='21' y2='3'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      vertical-align: middle;
+    }
+
     /* Responsive */
     @media (max-width: 900px) {
       .features-grid {
@@ -478,7 +490,7 @@
     <a href="index.html" class="nav-logo">ACDL</a>
     <div class="nav-links">
       <a href="visualizer.html">Live Editor</a>
-      <a href="Docs/SyntaxReference.html">Docs</a>
+      <a href="Docs/SyntaxReference.html">Documentation</a>
       <a href="Examples/">Examples</a>
       <a href="vscode.html">VSCode</a>
       <a href="https://github.com/acdlang26/acdl" class="external">GitHub</a>
@@ -639,7 +651,7 @@
             <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
             <polyline points="14 2 14 8 20 8"></polyline>
           </svg>
-          <h4>Examples</h4>
+          <h4>ACDL Examples</h4>
           <span>ReAct, RAG, multi-agent</span>
         </a>
         <a href="vscode.html" class="resource-card">
@@ -654,7 +666,7 @@
   </section>
 
   <footer>
-    <p>ACDL — Agentic Context Description Language · <a href="https://github.com/acdlang26/acdl">GitHub</a></p>
+    <p>ACDL — Agentic Context Description Language · <a href="https://github.com/acdlang26/acdl" class="external">GitHub</a></p>
   </footer>
 </body>
 </html>
