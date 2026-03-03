@@ -4726,6 +4726,15 @@ document.addEventListener("DOMContentLoaded", () => {
       exportBtn.classList.remove("loading");
     }
   });
+
+  // Load example from URL parameter if present
+  const urlParams = new URLSearchParams(window.location.search);
+  const exampleParam = urlParams.get('example');
+  if (exampleParam && PROMPTS[exampleParam]) {
+    promptSelect.value = exampleParam;
+    editor.value = PROMPTS[exampleParam];
+    doRender();
+  }
 });
   </script>
 </body>
