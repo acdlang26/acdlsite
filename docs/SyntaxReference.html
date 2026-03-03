@@ -56,6 +56,24 @@
 
     .nav-links a:hover { color: #fff; }
 
+    .nav-links a.external::after {
+      content: '';
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin-left: 4px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.6)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/%3E%3Cpolyline points='15 3 21 3 21 9'/%3E%3Cline x1='10' y1='14' x2='21' y2='3'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      vertical-align: middle;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+
+    .nav-links a.external:hover::after {
+      opacity: 1;
+    }
+
     /* Layout */
     .container {
       display: flex;
@@ -261,6 +279,200 @@
       margin-top: 8px;
     }
 
+    /* Rendered output examples */
+    .rendered-output {
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 20px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+    }
+
+    .rendered-output .render-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: rgba(10,10,10,0.4);
+      margin-bottom: 12px;
+    }
+
+    .rendered-output .msg {
+      display: flex;
+      margin-bottom: 8px;
+      align-items: flex-start;
+    }
+
+    .rendered-output .msg:last-child {
+      margin-bottom: 0;
+    }
+
+    .rendered-output .role-tag {
+      flex-shrink: 0;
+      width: 24px;
+      height: 20px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 11px;
+      margin-right: 10px;
+      color: #fff;
+    }
+
+    .rendered-output .role-tag.system { background: #7c3aed; }
+    .rendered-output .role-tag.user { background: #059669; }
+    .rendered-output .role-tag.assistant { background: #d97706; }
+    .rendered-output .role-tag.tool { background: #0891b2; }
+    .rendered-output .role-tag.none { background: #6b7280; }
+
+    .rendered-output .msg-content {
+      flex: 1;
+      background: #f8f9fa;
+      border-radius: 6px;
+      padding: 8px 12px;
+      line-height: 1.5;
+    }
+
+    .rendered-output .template-box {
+      display: inline-block;
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      border: 1px dashed #d97706;
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: 500;
+      color: #92400e;
+    }
+
+    .rendered-output .context-var {
+      display: inline-block;
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 11px;
+      color: #1e40af;
+    }
+
+    .rendered-output .func-call {
+      display: inline-block;
+      background: linear-gradient(135deg, #fef9c3 0%, #fef08a 100%);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 11px;
+      color: #854d0e;
+    }
+
+    .rendered-output .loop-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(10,10,10,0.4);
+      font-size: 11px;
+      margin: 8px 0 8px 34px;
+      font-style: italic;
+    }
+
+    .rendered-output .loop-indicator::before,
+    .rendered-output .loop-indicator::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(0,0,0,0.1);
+    }
+
+    .rendered-output .mark-bracket {
+      position: relative;
+      border-left: 2px solid #7877c6;
+      padding-left: 12px;
+      margin-left: 4px;
+    }
+
+    .rendered-output .mark-number {
+      position: absolute;
+      left: -8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #7877c6;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 600;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .rendered-output .label-block {
+      border: 1px solid rgba(120, 119, 198, 0.3);
+      border-radius: 8px;
+      padding: 8px;
+      margin-bottom: 8px;
+    }
+
+    .rendered-output .label-name {
+      font-size: 10px;
+      font-weight: 600;
+      color: #7877c6;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .rendered-output .condition-badge {
+      display: inline-block;
+      background: #f3e8ff;
+      border: 1px solid #c4b5fd;
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 10px;
+      color: #6d28d9;
+      margin-bottom: 8px;
+    }
+
+    .rendered-output .name-def {
+      display: inline-block;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 11px;
+      color: #047857;
+    }
+
+    .rendered-output .render-comment {
+      color: rgba(10,10,10,0.35);
+      font-style: italic;
+      margin-left: 8px;
+    }
+
+    .code-and-render {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .code-and-render pre {
+      margin: 0;
+    }
+
+    .code-and-render .rendered-output {
+      margin: 0;
+    }
+
+    @media (max-width: 1100px) {
+      .code-and-render {
+        grid-template-columns: 1fr;
+      }
+    }
+
     /* Footer */
     footer {
       padding: 48px 24px;
@@ -292,10 +504,11 @@
   <nav>
     <a href="../index.html" class="nav-logo">ACDL</a>
     <div class="nav-links">
-      <a href="../visualizer.html">Visualizer</a>
+      <a href="../visualizer.html">Live Editor</a>
       <a href="SyntaxReference.html">Docs</a>
       <a href="../examples/">Examples</a>
-      <a href="https://github.com/acdlang26/acdl">GitHub</a>
+      <a href="../vscode.html">VSCode</a>
+      <a href="https://github.com/acdlang26/acdl" class="external">GitHub</a>
     </div>
   </nav>
 
@@ -352,6 +565,25 @@ PromptName2[idx1, idx2, ...]: {
     &lt;prompt-blocks&gt;
 }</pre>
 
+      <h3>Example</h3>
+      <div class="code-and-render">
+        <pre>BasicPrompt[<span class="context">@T</span>]: {
+    <span class="role">S</span>: <span class="template">INSTRUCTIONS</span>
+    <span class="role">U</span>: <span class="context">env.user_question</span>[<span class="context">@T</span>]
+}</pre>
+        <div class="rendered-output">
+          <div class="render-label">Rendered Output</div>
+          <div class="msg">
+            <span class="role-tag system">S</span>
+            <div class="msg-content"><span class="template-box">INSTRUCTIONS</span></div>
+          </div>
+          <div class="msg">
+            <span class="role-tag user">U</span>
+            <div class="msg-content"><span class="context-var">env.user_question[@T]</span></div>
+          </div>
+        </div>
+      </div>
+
       <!-- ROLE MESSAGES -->
       <h2 id="role-messages">Role Messages</h2>
       <p>Every message carries exactly one role. Four roles serve the chat format; a fifth pseudo-role serves the legacy completion format:</p>
@@ -368,18 +600,48 @@ PromptName2[idx1, idx2, ...]: {
       <h3>Multi-Line Form</h3>
       <p>Role messages support two syntactic forms. The <strong>multi-line form</strong> encloses content in braces and permits any combination of content elements and control flow:</p>
 
-      <pre><span class="role">S</span>: {
+      <div class="code-and-render">
+        <pre><span class="role">S</span>: {
     <span class="template">INSTRUCTIONS</span>
     <span class="template">AVAILABLE_TOOLS</span>
     <span class="context">env.datetime</span>[<span class="context">@t</span>]
 }</pre>
+        <div class="rendered-output">
+          <div class="render-label">Rendered Output</div>
+          <div class="msg">
+            <span class="role-tag system">S</span>
+            <div class="msg-content">
+              <span class="template-box">INSTRUCTIONS</span><br>
+              <span class="template-box">AVAILABLE_TOOLS</span><br>
+              <span class="context-var">env.datetime[@t]</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <h3>Single-Line Form</h3>
       <p>The <strong>single-line form</strong> omits braces and accepts exactly one content element&mdash;a context variable, template, or function call:</p>
 
-      <pre><span class="role">U</span>: <span class="context">env.user_question</span>[<span class="context">@t</span>]
+      <div class="code-and-render">
+        <pre><span class="role">U</span>: <span class="context">env.user_question</span>[<span class="context">@t</span>]
 <span class="role">A</span>: <span class="context">resp.answer</span>[<span class="context">@t</span>]
 <span class="role">S</span>: <span class="template">INSTRUCTIONS</span></pre>
+        <div class="rendered-output">
+          <div class="render-label">Rendered Output</div>
+          <div class="msg">
+            <span class="role-tag user">U</span>
+            <div class="msg-content"><span class="context-var">env.user_question[@t]</span></div>
+          </div>
+          <div class="msg">
+            <span class="role-tag assistant">A</span>
+            <div class="msg-content"><span class="context-var">resp.answer[@t]</span></div>
+          </div>
+          <div class="msg">
+            <span class="role-tag system">S</span>
+            <div class="msg-content"><span class="template-box">INSTRUCTIONS</span></div>
+          </div>
+        </div>
+      </div>
 
       <div class="warning">
         <p><strong>Important:</strong> Control flow constructs (<code>ForEach</code>, <code>If</code>, <code>Switch</code>) are <em>not</em> permitted in single-line role messages. To include control flow inside a role message, the multi-line braced form must be used:</p>
@@ -495,9 +757,19 @@ PromptName2[idx1, idx2, ...]: {
 
       <p>Templates may accept arguments in parentheses, enabling parameterized text:</p>
 
-      <pre><span class="template">INSTRUCTIONS</span>                   <span class="comment">// Task explanation</span>
-<span class="template">AVAILABLE_TOOLS</span>                <span class="comment">// Tool list</span>
-<span class="template">QUERY</span>(<span class="context">sys.agent_name</span>)          <span class="comment">// A query dependent on the agent's name</span></pre>
+      <div class="code-and-render">
+        <pre><span class="template">INSTRUCTIONS</span>         <span class="comment">// Task explanation</span>
+<span class="template">AVAILABLE_TOOLS</span>      <span class="comment">// Tool list</span>
+<span class="template">QUERY</span>(<span class="context">sys.agent_name</span>) <span class="comment">// Parameterized</span></pre>
+        <div class="rendered-output">
+          <div class="render-label">Rendered Output</div>
+          <div style="line-height: 2;">
+            <span class="template-box">INSTRUCTIONS</span> <span class="render-comment">// Task explanation</span><br>
+            <span class="template-box">AVAILABLE_TOOLS</span> <span class="render-comment">// Tool list</span><br>
+            <span class="template-box">QUERY(sys.agent_name)</span> <span class="render-comment">// Parameterized</span>
+          </div>
+        </div>
+      </div>
 
       <p>An optional inline comment (after <code>//</code>) documents the intended content of the template.</p>
 
@@ -507,9 +779,19 @@ PromptName2[idx1, idx2, ...]: {
 
       <p>The syntax is <code>functionName(arg1, arg2, ...)[indices]</code>. Function names use <code>camelCase</code> (distinguishing them from <code>ALL_CAPS</code> templates). Arguments may be context variables, time or regular indices, numeric literals, arithmetic expressions, or nested function calls:</p>
 
-      <pre><span class="function">summarize</span>(<span class="context">prompt.History</span>[<span class="context">@t</span>])
+      <div class="code-and-render">
+        <pre><span class="function">summarize</span>(<span class="context">prompt.History</span>[<span class="context">@t</span>])
 <span class="function">get_dialog_history</span>(<span class="context">sys.agent_name</span>)
 <span class="function">range</span>(1, <span class="context">@T</span>-1, 2)</pre>
+        <div class="rendered-output">
+          <div class="render-label">Rendered Output</div>
+          <div style="line-height: 2;">
+            <span class="func-call">summarize(prompt.History[@t])</span><br>
+            <span class="func-call">get_dialog_history(sys.agent_name)</span><br>
+            <span class="func-call">range(1, @T-1, 2)</span>
+          </div>
+        </div>
+      </div>
 
       <div class="note">
         <p><strong>Built-in Function:</strong> The <code>range(start, stop, step)</code> function generates numeric sequences for use in <code>ForEach</code> loops. The <code>step</code> argument is optional and defaults to 1. The range is <strong>inclusive</strong>, meaning <code>range(1, 2)</code> starts at 1 and ends at 2, including 2.</p>
@@ -528,49 +810,102 @@ PromptName2[idx1, idx2, ...]: {
 
       <p>The iterable may be a <code>range(start, stop, step)</code> call or a collection-valued context variable. At the top level, the loop body may contain role messages, producing multiple messages per iteration. Inside a role block, it produces repeated content elements:</p>
 
-      <pre><span class="comment">// Top-level: produces role messages</span>
-<span class="keyword">ForEach</span>(<span class="context">@t</span>: <span class="function">range</span>(1, <span class="context">@T</span>-1)) {
+      <h4>Top-level ForEach (produces multiple messages)</h4>
+      <div class="code-and-render">
+        <pre><span class="keyword">ForEach</span>(<span class="context">@t</span>: <span class="function">range</span>(1, <span class="context">@T</span>-1)) {
     <span class="role">U</span>: <span class="context">env.user_question</span>[<span class="context">@t</span>]
     <span class="role">A</span>: <span class="context">resp.answer</span>[<span class="context">@t</span>]
-}
+}</pre>
+        <div class="rendered-output">
+          <div class="render-label">Rendered Output (when @T=4)</div>
+          <div class="msg">
+            <span class="role-tag user">U</span>
+            <div class="msg-content"><span class="context-var">env.user_question[@1]</span></div>
+          </div>
+          <div class="msg">
+            <span class="role-tag assistant">A</span>
+            <div class="msg-content"><span class="context-var">resp.answer[@1]</span></div>
+          </div>
+          <div class="msg">
+            <span class="role-tag user">U</span>
+            <div class="msg-content"><span class="context-var">env.user_question[@2]</span></div>
+          </div>
+          <div class="msg">
+            <span class="role-tag assistant">A</span>
+            <div class="msg-content"><span class="context-var">resp.answer[@2]</span></div>
+          </div>
+          <div class="msg">
+            <span class="role-tag user">U</span>
+            <div class="msg-content"><span class="context-var">env.user_question[@3]</span></div>
+          </div>
+          <div class="msg">
+            <span class="role-tag assistant">A</span>
+            <div class="msg-content"><span class="context-var">resp.answer[@3]</span></div>
+          </div>
+        </div>
+      </div>
 
-<span class="comment">// Inside a role: produces content</span>
-<span class="role">U</span>: {
+      <h4>ForEach inside a role (produces repeated content)</h4>
+      <div class="code-and-render">
+        <pre><span class="role">U</span>: {
     <span class="keyword">ForEach</span>(bomb: <span class="context">env.bombs</span>) {
         <span class="context">env.bomb_location</span>[<span class="context">@t</span>, bomb]
         <span class="context">env.bomb_details</span>[<span class="context">@t</span>, bomb]
     }
-}
-
-<span class="comment">// Collection iteration</span>
-<span class="keyword">ForEach</span>(agent: <span class="context">sys.agent_names</span>) {
-    <span class="role">U</span>: <span class="context">env.utterance</span>[<span class="context">@t</span>, agent]
 }</pre>
+        <div class="rendered-output">
+          <div class="render-label">Rendered Output (3 bombs)</div>
+          <div class="msg">
+            <span class="role-tag user">U</span>
+            <div class="msg-content">
+              <span class="context-var">env.bomb_location[@t, bomb1]</span><br>
+              <span class="context-var">env.bomb_details[@t, bomb1]</span><br>
+              <span class="context-var">env.bomb_location[@t, bomb2]</span><br>
+              <span class="context-var">env.bomb_details[@t, bomb2]</span><br>
+              <span class="context-var">env.bomb_location[@t, bomb3]</span><br>
+              <span class="context-var">env.bomb_details[@t, bomb3]</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <h3 id="conditionals">If / ElseIf / Else</h3>
       <p><code>If</code> / <code>ElseIf</code> / <code>Else</code> conditionally includes or excludes blocks based on runtime state. Conditions may use comparison operators (<code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>) and logical connectives (<code>&amp;</code>, <code>|</code>):</p>
+
+      <div class="code-and-render">
+        <pre><span class="keyword">If</span> <span class="context">sys.tool</span>[<span class="context">@t</span>] == get_clarification {
+    <span class="role">U</span>: <span class="context">env.user_input</span>[<span class="context">@t</span>]
+}
+<span class="keyword">ElseIf</span> <span class="context">sys.tool</span>[<span class="context">@t</span>] == search {
+    <span class="role">U</span>: <span class="context">env.search_results</span>[<span class="context">@t</span>]
+}
+<span class="keyword">Else</span> {
+    <span class="role">A</span>: <span class="context">sys.tool</span>[<span class="context">@t</span>].<span class="context">tool_response</span>
+}</pre>
+        <div class="rendered-output">
+          <div class="render-label">Rendered (tool = search)</div>
+          <div class="condition-badge">If sys.tool[@t] == search</div>
+          <div class="msg">
+            <span class="role-tag user">U</span>
+            <div class="msg-content"><span class="context-var">env.search_results[@t]</span></div>
+          </div>
+        </div>
+      </div>
+
+      <p>Conditionals can also guard entire sections including loops:</p>
 
       <pre><span class="keyword">If</span> <span class="context">@T</span> &gt; 1 {
     <span class="keyword">ForEach</span>(<span class="context">t</span>: <span class="function">range</span>(1, <span class="context">@T</span>-1)) {
         <span class="role">U</span>: <span class="context">env.user_input</span>[<span class="context">@t</span>]
         <span class="role">A</span>: <span class="context">resp.answer</span>[<span class="context">@t</span>]
     }
-}
-
-<span class="keyword">If</span> <span class="context">sys.tool</span>[<span class="context">@t</span>] == get_clarification {
-    <span class="role">U</span>: <span class="context">env.user_input</span>[<span class="context">@i</span>]
-}
-<span class="keyword">ElseIf</span> <span class="context">sys.tool</span>[<span class="context">@i</span>] == search {
-    <span class="role">A</span>: <span class="context">env.search_results</span>[<span class="context">@t</span>]
-}
-<span class="keyword">Else</span> {
-    <span class="role">A</span>: <span class="context">sys.tool_used</span>[<span class="context">@t</span>].<span class="context">tool_response</span>
 }</pre>
 
       <h3 id="switch">Switch / Case / Default</h3>
       <p><code>Switch</code> / <code>Case</code> / <code>Default</code> selects among multiple alternatives based on the value of an expression:</p>
 
-      <pre><span class="keyword">Switch</span> <span class="context">sys.action_type</span>[<span class="context">@t</span>] {
+      <div class="code-and-render">
+        <pre><span class="keyword">Switch</span> <span class="context">sys.action_type</span>[<span class="context">@t</span>] {
     <span class="keyword">Case</span> <span class="string">"search"</span> {
         <span class="role">U</span>: <span class="context">env.search_results</span>[<span class="context">@t</span>]
     }
@@ -581,6 +916,15 @@ PromptName2[idx1, idx2, ...]: {
         <span class="role">U</span>: <span class="context">env.fallback</span>[<span class="context">@t</span>]
     }
 }</pre>
+        <div class="rendered-output">
+          <div class="render-label">Rendered (action = "calculate")</div>
+          <div class="condition-badge">Case "calculate"</div>
+          <div class="msg">
+            <span class="role-tag user">U</span>
+            <div class="msg-content"><span class="context-var">env.calculation[@t]</span></div>
+          </div>
+        </div>
+      </div>
 
       <p>The <code>break</code> and <code>continue</code> keywords are available inside loops with their standard semantics.</p>
 
@@ -590,19 +934,34 @@ PromptName2[idx1, idx2, ...]: {
 
       <pre><span class="keyword">PromptEndsHere when</span> &lt;condition&gt;</pre>
 
-      <p>For example, to end the prompt at the first sub-step of the current turn:</p>
+      <p>For example, to end the prompt at the first time step:</p>
 
-      <pre>Prompt[<span class="context">@T</span>]: {
+      <div class="code-and-render">
+        <pre>Prompt[<span class="context">@T</span>]: {
     <span class="role">S</span>: <span class="template">INSTRUCTIONS</span>
     <span class="role">U</span>: <span class="context">env.user_input</span>[<span class="context">@T</span>]
-    <span class="keyword">PromptEndsHere when</span> (<span class="context">@T</span> == <span class="context">@t</span> && <span class="context">T</span>.0)
-    <span class="keyword">ForEach</span>(<span class="context">i</span>: <span class="function">range</span>(1, <span class="context">@t</span>.substeps)) {
-        <span class="role">A</span>: <span class="context">resp.answer</span>[<span class="context">@T</span>.<span class="context">i</span>]
-        <span class="role">U</span>: <span class="context">env.feedback</span>[<span class="context">@T</span>.<span class="context">i</span>]
+    <span class="keyword">PromptEndsHere when</span> (<span class="context">@T</span> == 1)
+    <span class="keyword">ForEach</span>(<span class="context">@t</span>: <span class="function">range</span>(1, <span class="context">@T</span>-1)) {
+        <span class="role">A</span>: <span class="context">resp.answer</span>[<span class="context">@t</span>]
     }
 }</pre>
+        <div class="rendered-output">
+          <div class="render-label">Rendered (when @T=1)</div>
+          <div class="msg">
+            <span class="role-tag system">S</span>
+            <div class="msg-content"><span class="template-box">INSTRUCTIONS</span></div>
+          </div>
+          <div class="msg">
+            <span class="role-tag user">U</span>
+            <div class="msg-content"><span class="context-var">env.user_input[@T]</span></div>
+          </div>
+          <div style="color: rgba(10,10,10,0.4); font-size: 11px; margin-top: 8px; font-style: italic; text-align: center;">
+            &mdash; Prompt ends here (condition met) &mdash;
+          </div>
+        </div>
+      </div>
 
-      <p>Here, if the current time is the first substep of the current turn, the prompt contains only the system instructions and user input. Otherwise, the full history of substep interactions is appended.</p>
+      <p>Here, if the current time is the first step, the prompt contains only the system instructions and user input. Otherwise, the full history is appended.</p>
 
       <!-- LABEL BLOCKS -->
       <h2 id="label-blocks">Label Blocks</h2>
