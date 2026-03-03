@@ -3688,7 +3688,6 @@ var ACDL = (() => {
     return output;
   }
   function renderPromptTitle(title) {
-    const indices = title.indices;
     const indexSuffix = renderIndexList(title.indices);
     return `<div class="prompt-title"><h1>${escapeHtml(title.name)}${indexSuffix}</h1></div>`;
   }
@@ -3731,7 +3730,7 @@ var ACDL = (() => {
   }
   function renderIndexList(indices) {
     if (indices.length === 0) return "";
-    return indices.map((idx) => `[${renderIndexValue(idx)}]`).join("");
+    return `[${indices.map((idx) => renderIndexValue(idx)).join(", ")}]`;
   }
   function renderPromptBody(body) {
     if (body.kind === "chat-prompt-body") {
